@@ -45,27 +45,4 @@ router.post(
 router.param("userId", getUserById);
 router.param("categoryId", categoryController.getCategoryById);
 
-// // POST /api/category
-// router.post(
-//   "/category",
-//   // [
-//   //   body("name").trim().isLength({ min: 5 }),
-//   // ],
-//   categoryController.createCategory
-// );
-
-// router.get("/category/:categoryId", isAuth, categoryController.getCategory);
-
-// router.put(
-//   "/category/:categoryId",
-//   isAuth,
-//   [
-//     body("title").trim().isLength({ min: 5 }),
-//     body("content").trim().isLength({ min: 5 }),
-//   ],
-//   categoryController.updateCategory
-// );
-
-// router.delete('/category/:categoryId', isAuth, categoryController.deleteCategory);
-
 module.exports = router;

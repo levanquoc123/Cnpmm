@@ -1,221 +1,9 @@
-// const { validationResult } = require("express-validator");
-// const bcrypt = require("bcryptjs");
-// const jwt = require("jsonwebtoken");
 
-// const User = require("../models/userModel");
-
-// exports.signup = (req, res, next) => {
-//   const errors = validationResult(req);
-//   if (!errors.isEmpty()) {
-//     const error = new Error("Validation failed.");
-//     error.statusCode = 422;
-//     error.data = errors.array();
-//     throw error;
-//   }
-
-//   const email = req.body.email;
-//   const name = req.body.name;
-//   const password = req.body.password;
-//   const role = req.body.role;
-
-//   if (!email) {
-//     return res.status(400).json({ error: 'You must enter an email address.' });
-//   }
-
-//   if (!password) {
-//     return res.status(400).json({ error: 'You must enter a password.' });
-//   }
-
-//   if (!role) {
-//     return res.status(400).json({ error: 'You must choose a role.' });
-//   }
-
-//   bcrypt
-//     .hash(password, 12)
-//     .then((hashedPw) => {
-//       const user = new User({
-//         name: name,
-//         email: email,
-//         password: hashedPw,
-//         role: role
-//       });
-//       return user.save();
-//     })
-//     .then((result) => {
-//       // res.status(201).json({ message: "User created!", userId: result._id });
-//       res.status(201).json({ message: "User created!", user: {
-//           userId: result._id,
-//           email: result.email,
-//           role: result.role
-//         }
-//     });
-//     })
-//     .catch((err) => {
-//       if (!err.statusCode) {
-//         err.statusCode = 500;
-//       }
-//       next(err);
-//     });
-
-/*
-  try {
-    const hashedPw = await bcrypt.hash(password, 12);
-
-    const user = new User({
-      email: email,
-      password: hashedPw,
-      name: name
-    });
-    const result = await user.save();
-    res.status(201).json({ message: 'User created!', userId: result._id });
-  } catch (err) {
-    if (!err.statusCode) {
-      err.statusCode = 500;
-    }
-    next(err);
-  }
-*/
-
-// };
-
-// exports.login = (req, res, next) => {
-//   const email = req.body.email;
-//   const password = req.body.password;
-//   const role = req.body.role;
-
-//   let loadedUser;
-
-//   if (!email) {
-//     return res.status(400).json({ error: 'You must enter an email address.' });
-//   }
-
-//   if (!password) {
-//     return res.status(400).json({ error: 'You must enter a password.' });
-//   }
-
-//   if (!role && role !== "ROLES.") {
-//     return res.status(400).json({ error: 'You must choose a role.' });
-//   }
-
-//   User.findOne({ email: email })
-//     .then(user => {
-//       if (!user) {
-//         const error = new Error("A user with this email could not be found.");
-//         error.statusCode = 401;
-//         throw error;
-//       }
-//       loadedUser = user;
-
-/*
-const isEqual = await bcrypt.compare(password, user.password);
-    if (!isEqual) {
-      const error = new Error('Wrong password!');
-      error.statusCode = 401;
-      throw error;
-    }
-    const token = jwt.sign(
-      {
-        email: loadedUser.email,
-        userId: loadedUser._id.toString()
-      },
-      'somesupersecretsecret',
-      { expiresIn: '1h' }
-    );
-    res.status(200).json({ token: token, userId: loadedUser._id.toString() });
-  } catch (err) {
-    if (!err.statusCode) {
-      err.statusCode = 500;
-    }
-    next(err);
-  }
-*/
-
-//       return bcrypt.compare(password, user.password);
-//     })
-//     .then(isEqual => {
-//       if (!isEqual) {
-//         const error = new Error("Wrong password!");
-//         error.statusCode = 401;
-//         throw error;
-//       }
-//       const token = jwt.sign(
-//         {
-//           email: loadedUser.email,
-//           userId: loadedUser._id.toString(),
-//           role: loadedUser.role
-//         },
-//         "somesupersecretsecret",
-//         { expiresIn: "2h" }
-//       );
-//       // res.status(200).json({ token: token, userId: loadedUser._id.toString() });
-//       res.status(200).json({ token: token, user: {
-//           userId: loadedUser._id.toString(),
-//           email: loadedUser.email,
-//           role: loadedUser.role
-//         }
-//       });
-//     })
-//     .catch(err => {
-//       if (!err.statusCode) {
-//         err.statusCode = 500;
-//       }
-//       next(err);
-//     });
-// };
-
-// exports.isAdmin = (req, res, next) => {
-//   if (req.profile.role === 0) {
-//       return res.status(403).json({
-//           error: 'Admin resource! Access denied'
-//       });
-//   }
-
-//   next();
-// };
-
-// exports.getUserStatus = async (req, res, next) => {
-//   try {
-//     const user = await User.findById(req.userId);
-//     if (!user) {
-//       const error = new Error('User not found.');
-//       error.statusCode = 404;
-//       throw error;
-//     }
-//     res.status(200).json({ status: user.status });
-//   } catch (err) {
-//     if (!err.statusCode) {
-//       err.statusCode = 500;
-//     }
-//     next(err);
-//   }
-// };
-
-// exports.updateUserStatus = async (req, res, next) => {
-//   const newStatus = req.body.status;
-//   try {
-//     const user = await User.findById(req.userId);
-//     if (!user) {
-//       const error = new Error('User not found.');
-//       error.statusCode = 404;
-//       throw error;
-//     }
-//     user.status = newStatus;
-//     await user.save();
-//     res.status(200).json({ message: 'User updated.' });
-//   } catch (err) {
-//     if (!err.statusCode) {
-//       err.statusCode = 500;
-//     }
-//     next(err);
-//   }
-// };
-
-// const { validationResult } = require('express-validator/check');
 const bcrypt = require("bcryptjs");
 
 const jwt = require("jsonwebtoken"); // to generate signed token
 const expressJwt = require("express-jwt"); // for authorization check
-// const User = require("../models/userModel");
+//const User = require("../models/userModel");
 const { errorHandler } = require("../helpers/dbErrorHandler");
 
 const expressValidator = require("express-validator");
@@ -247,60 +35,6 @@ const transporter = nodemailer.createTransport(
 );
 
 exports.signUp = (req, res) => {
-  // const user = new User({
-  //   name: req.body.name,
-  //   email: req.body.email,
-  //   hashed_password: bcrypt.hashSync(req.body.hashed_password, 8),
-  // });
-
-  // user.save((err, user) => {
-  //   if (err) {
-  //     res.status(500).send({ message: err });
-  //     return;
-  //   }
-
-  //   if (req.body.roles) {
-  //     Role.find(
-  //       {
-  //         name: { $in: req.body.roles },
-  //       },
-  //       (err, roles) => {
-  //         if (err) {
-  //           res.status(500).send({ message: err });
-  //           return;
-  //         }
-
-  //         user.roles = roles.map((role) => role._id);
-  //         user.save((err) => {
-  //           if (err) {
-  //             res.status(500).send({ message: err });
-  //             return;
-  //           }
-
-  //           res.send({ message: "User was registered successfully!" });
-  //         });
-  //       }
-  //     );
-  //   } else {
-  //     Role.findOne({ name: "user" }, (err, role) => {
-  //       if (err) {
-  //         res.status(500).send({ message: err });
-  //         return;
-  //       }
-
-  //       user.roles = [role._id];
-  //       user.save((err) => {
-  //         if (err) {
-  //           res.status(500).send({ message: err });
-  //           return;
-  //         }
-
-  //         res.send({ message: "User was registered successfully!" });
-  //       });
-  //     });
-  //   }
-  // });
-
   console.log("req.body", req.body);
   const user = new User(req.body);
 
@@ -330,13 +64,6 @@ exports.signUp = (req, res) => {
           res.status(200).json({
             user,
           });
-
-          // if (err) {
-          //   res.status(500).send({ message: err });
-          //   return;
-          // }
-
-          // res.send({ message: "User was registered successfully!" });
         });
       }
     );
@@ -361,13 +88,6 @@ exports.signUp = (req, res) => {
         res.status(200).json({
           user,
         });
-
-        // if (err) {
-        //   res.status(500).send({ message: err });
-        //   return;
-        // }
-
-        // res.send({ message: "User was registered successfully!" });
       });
     });
   }
@@ -382,31 +102,6 @@ exports.signIn = (req, res) => {
   User.findOne({ email })
     .populate("roles", "-__v")
     .exec((err, user) => {
-      // if (err) {
-      //   res.status(500).send({ message: err });
-      //   return;
-      // }
-
-      // if (!user) {
-      //   return res.status(404).send({ message: "User Not found." });
-      // }
-
-      // var passwordIsValid = bcrypt.compareSync(
-      //   req.body.hashed_password,
-      //   user.hashed_password
-      // );
-
-      // if (!passwordIsValid) {
-      //   return res.status(401).send({
-      //     accessToken: null,
-      //     message: "Invalid Password!",
-      //   });
-      // }
-
-      // var token = jwt.sign({ id: user.id }, config.secret, {
-      //   expiresIn: 86400, // 24 hours
-      // });
-
       if (err || !user) {
         return res.status(400).json({
           error: "User with that email does not exist. Please register!",
@@ -444,50 +139,7 @@ exports.signIn = (req, res) => {
         // accessToken: token,
       });
     });
-
-  // find the user based on email
-  // const { email, password } = req.body;
-  // User.findOne({ email }, (err, user) => {
-  //   if (err || !user) {
-  //     return res.status(400).json({
-  //       error: "User with that email does not exist. Please register!",
-  //     });
-  //   }
-  //   // if user is found make sure the email and password match
-  //   // create authenticate method in user model
-  //   if (!user.authenticate(password)) {
-  //     return res.status(401).json({
-  //       error: "Email or password do not match",
-  //     });
-  //   }
-  //   // generate a signed token with user id and secret
-  //   const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
-  //     expiresIn: "7d",
-  //   });
-  //   // persist the token as 't' in cookie with expiry date
-  //   res.cookie("t", token, { expire: new Date() + 9999 });
-
-  //   var authorities = [];
-
-  //   for (let i = 0; i < user.roles.length; i++) {
-  //     authorities.push("ROLE_" + user.roles[i].name.toUpperCase());
-  //   }
-  //   // return response with user and token to frontend client
-  //   // const { _id, name, email, role } = user;
-  //   return res.status(200).send({
-  //     token,
-  //     user: {
-  //       _id: user._id,
-  //       name: user.name,
-  //       email: user.email,
-  //       roles: authorities,
-  //     },
-
-  //     // accessToken: token,
-  //   });
-  //   // return res.status(200).json({ token, user: { _id, email, name, role } });
-  // });
-};
+  };
 
 exports.signOut = (req, res) => {
   res.clearCookie("t");
@@ -715,15 +367,6 @@ exports.signupPost = function (req, res, next) {
         if (err) {
           return res.status(500).send({ msg: err.message });
         }
-
-        // Send the email
-        // var transporter = nodemailer.createTransport({
-        //   service: "Sendgrid",
-        //   auth: {
-        //     user: process.env.SENDGRID_USERNAME,
-        //     pass: process.env.SENDGRID_PASSWORD,
-        //   },
-        // });
         var mailOptions = {
           from: process.env.EMAIL_FROM,
           to: user.email,
@@ -831,15 +474,6 @@ exports.resendTokenPost = function (req, res, next) {
       if (err) {
         return res.status(500).send({ msg: err.message });
       }
-
-      // Send the email
-      // var transporter = nodemailer.createTransport({
-      //   service: "Sendgrid",
-      //   auth: {
-      //     user: process.env.SENDGRID_USERNAME,
-      //     pass: process.env.SENDGRID_PASSWORD,
-      //   },
-      // });
       var mailOptions = {
         from: process.env.EMAIL_FROM,
         to: user.email,
@@ -863,113 +497,3 @@ exports.resendTokenPost = function (req, res, next) {
     });
   });
 };
-
-// const config = require("../config/auth.config");
-// const db = require("../models");
-// const User = db.user;
-// const Role = db.role;
-
-// var jwt = require("jsonwebtoken");
-// var bcrypt = require("bcryptjs");
-
-// exports.signup = (req, res) => {
-//   const user = new User({
-//     username: req.body.username,
-//     email: req.body.email,
-//     password: bcrypt.hashSync(req.body.password, 8),
-//   });
-
-//   user.save((err, user) => {
-//     if (err) {
-//       res.status(500).send({ message: err });
-//       return;
-//     }
-
-//     if (req.body.roles) {
-//       Role.find(
-//         {
-//           name: { $in: req.body.roles },
-//         },
-//         (err, roles) => {
-//           if (err) {
-//             res.status(500).send({ message: err });
-//             return;
-//           }
-
-//           user.roles = roles.map((role) => role._id);
-//           user.save((err) => {
-//             if (err) {
-//               res.status(500).send({ message: err });
-//               return;
-//             }
-
-//             res.send({ message: "User was registered successfully!" });
-//           });
-//         }
-//       );
-//     } else {
-//       Role.findOne({ name: "user" }, (err, role) => {
-//         if (err) {
-//           res.status(500).send({ message: err });
-//           return;
-//         }
-
-//         user.roles = [role._id];
-//         user.save((err) => {
-//           if (err) {
-//             res.status(500).send({ message: err });
-//             return;
-//           }
-
-//           res.send({ message: "User was registered successfully!" });
-//         });
-//       });
-//     }
-//   });
-// };
-
-// exports.signin = (req, res) => {
-//   User.findOne({
-//     username: req.body.username,
-//   })
-//     .populate("roles", "-__v")
-//     .exec((err, user) => {
-//       if (err) {
-//         res.status(500).send({ message: err });
-//         return;
-//       }
-
-//       if (!user) {
-//         return res.status(404).send({ message: "User Not found." });
-//       }
-
-//       var passwordIsValid = bcrypt.compareSync(
-//         req.body.password,
-//         user.password
-//       );
-
-//       if (!passwordIsValid) {
-//         return res.status(401).send({
-//           accessToken: null,
-//           message: "Invalid Password!",
-//         });
-//       }
-
-//       var token = jwt.sign({ id: user.id }, config.secret, {
-//         expiresIn: 86400, // 24 hours
-//       });
-
-//       var authorities = [];
-
-//       for (let i = 0; i < user.roles.length; i++) {
-//         authorities.push("ROLE_" + user.roles[i].name.toUpperCase());
-//       }
-//       res.status(200).send({
-//         id: user._id,
-//         username: user.username,
-//         email: user.email,
-//         roles: authorities,
-//         accessToken: token,
-//       });
-//     });
-// };

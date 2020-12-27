@@ -46,37 +46,11 @@ db.mongoose
     console.log("MongoDB connected!");
     initial();
 
-    // const server = app.listen(8090);
-    // const io = require('./socket').init(server);
-    // io.on('connection', socket => {
-    //   console.log('Client connected');
-    // });
   })
   .catch((err) => {
     console.log("Cannot connect to the database!", err);
     process.exit();
   });
-
-// const fileStorage = multer.diskStorage({
-//   destination: function (req, file, cb) {
-//     cb(null, "images");
-//   },
-//   filename: function (req, file, cb) {
-//     cb(null, uuidv4.v4() + '.png');
-//   },
-// });
-
-// const fileFilter = (req, file, cb) => {
-//   if (
-//     file.mimetype === "image/png" ||
-//     file.mimetype === "image/jpg" ||
-//     file.mimetype === "image/jpeg"
-//   ) {
-//     cb(null, true);
-//   } else {
-//     cb(null, false);
-//   }
-// };
 
 function initial() {
   Role.collection.estimatedDocumentCount((err, count) => {
@@ -129,27 +103,6 @@ app.use(cors());
 // app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).single("image"));
 app.use("/images", express.static(path.join(__dirname, "images")));
 
-// app.use((req, res, next) => {
-//   // res.header(
-//   //   "Access-Control-Allow-Headers",
-//   //   "x-access-token, Origin, Content-Type, Accept"
-//   // );
-
-//   res.setHeader("Access-Control-Allow-Origin", "*");
-//   res.setHeader(
-//     "Access-Control-Allow-Methods",
-//     // "OPTIONS, GET, POST, PUT, PATCH, DELETE",
-//     "Origin, X-Requested-With, Content-Type, Accept, Authorization"
-//   );
-//   // res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-//   res.setHeader(
-//     "Access-Control-Allow-Methods",
-//     "OPTIONS, GET, POST, PUT, PATCH, DELETE"
-//   );
-
-//   next();
-// });
-
 // routes middleware
 app.use("/api", authRoutes);
 app.use("/api", userRoutes);
@@ -170,11 +123,3 @@ app.listen(PORT, () => {
 
 module.exports = app;
 
-// const port = 8090;
-// app.listen(port, () => {
-//   console.log(`Server is running on port ${port}`);
-// });
-// const io = require('./socket').init(server);
-//   io.on('connection', socket => {
-//     console.log('Client connected');
-//   });

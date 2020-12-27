@@ -10,40 +10,6 @@ var AWS = require("aws-sdk");
 var storage = multer.memoryStorage();
 var upload = multer({ storage: storage });
 
-// app.get("/", (req, res) => {
-//   AWS.config.update({
-//     accessKeyId: "Your Key Goes Here",
-//     secretAccessKey: "Your Secret Key Goes Here",
-//   });
-//   let s3 = new AWS.S3();
-//   async function getImage() {
-//     const data = s3
-//       .getObject({
-//         Bucket: "companyimages",
-//         Key: "your stored image",
-//       })
-//       .promise();
-//     return data;
-//   }
-//   getImage()
-//     .then((img) => {
-//       let image =
-//         "<img src='data:image/jpeg;base64," + encode(img.Body) + "'" + "/>";
-//       let startHTML = "<html><body></body>";
-//       let endHTML = "</body></html>";
-//       let html = startHTML + image + endHTML;
-//       res.send(html);
-//     })
-//     .catch((e) => {
-//       res.send(e);
-//     });
-//   function encode(data) {
-//     let buf = Buffer.from(data);
-//     let base64 = buf.toString("base64");
-//     return base64;
-//   }
-// });
-
 // Get all Documents s Routes
 router.route("/").get((req, res, next) => {
   DOCUMENT.find(
@@ -60,16 +26,6 @@ router.route("/").get((req, res, next) => {
     }
   );
 });
-
-// Route to get a single existing GO data (needed for the Edit functionality)
-// router.route("/:id").get((req, res, next) => {
-//   DOCUMENT.findById(req.params.id, (err, go) => {
-//     if (err) {
-//       return next(err);
-//     }
-//     res.json(go);
-//   });
-// });
 
 // route to upload a pdf document file
 // In upload.single("file") - the name inside the single-quote is the name of the field that is going to be uploaded.
@@ -128,44 +84,8 @@ router.post("/upload", upload.single("file"), function (req, res) {
           });
         }
       });
-
-      // s3bucket.getSignedUrl("getObject", urlParams, function (err, url) {
-      //   // fileURL = url;
-      //   console.log(fileURL);
-      //   res.send({ data });
-      // });
-      // console.log(fileURL);
-      // var newFileUploaded = {
-      //   description: req.body.description,
-      //   fileLink: fileURL,
-      // };
-      // var document = new DOCUMENT(newFileUploaded);
-      // document.save(function (error, newFile) {
-      //   if (error) {
-      //     throw error;
-      //   }
-      // });
     }
   });
-
-  // s3bucket.upload(params, function (err, data) {
-  //   if (err) {
-  //     res.status(500).json({ error: true, Message: err });
-  //   } else {
-  //     res.send({ data });
-  //     var newFileUploaded = {
-  //       description: req.body.description,
-  //       fileLink: s3FileURL + file.originalname,
-  //       s3_key: params.Key,
-  //     };
-  //     var document = new DOCUMENT(newFileUploaded);
-  //     document.save(function (error, newFile) {
-  //       if (error) {
-  //         throw error;
-  //       }
-  //     });
-  //   }
-  // });
 });
 
 // Route to edit existing record's description field
@@ -214,74 +134,10 @@ router.route("/:id").get((req, res, next) => {
           doc,
         });
       });
-
-      //   const data = s3bucket
-      //     .getObject({
-      //       Bucket: process.env.AWS_BUCKET_NAME,
-      //       Key: doc.s3_key,
-      //     })
-      //     .promise();
-      //   return res.status(201).json(data);
-      // .then((img) => {
-      //   let image =
-      //     "<img src='data:image/jpeg;base64," + encode(img.Body) + "'" + "/>";
-      //   let startHTML = "<html><body></body>";
-      //   let endHTML = "</body></html>";
-      //   let html = startHTML + image + endHTML;
-      //   res.send(html);
-      // })
-      // .catch((e) => {
-      //   res.send(e);
-      // });
     })
     .catch((err) => {
       return res.status(401).json({ message: "error" + err.toString() });
     });
-
-  // if (err) {
-  //   return next(err);
-  // }
-  // //Now Delete the file from AWS-S3
-  // // https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html#deleteObject-property
-
-  // let urlParams = {
-  //   Bucket: process.env.AWS_BUCKET_NAME,
-  //   Key: result.s3_key,
-  // };
-  // s3bucket.getSignedUrl("getObject", urlParams, function (err, url) {
-  //   // fileURL = url;
-  //   console.log(fileURL);
-  //   res.send({ data });
-  // });
-
-  //   console.log(fileURL);
-  //   var newFileUploaded = {
-  //     description: req.body.description,
-  //     fileLink: fileURL
-  //   };
-  //   var document = new DOCUMENT(newFileUploaded);
-  //   document.save(function(error, newFile) {
-  //     if (error) {
-  //       throw error;
-  //     }
-  //   });
-
-  //   let params = {
-  //     Bucket: process.env.AWS_BUCKET_NAME,
-  //     Key: result.s3_key,
-  //   };
-
-  //   s3bucket.deleteObject(params, (err, data) => {
-  //     if (err) {
-  //       console.log(err);
-  //     } else {
-  //       res.send({
-  //         status: "200",
-  //         responseType: "string",
-  //         response: "success",
-  //       });
-  //     }
-  //   });
 });
 
 // Router to delete a DOCUMENT file
@@ -328,31 +184,4 @@ The urlParams are parameters that take the Bucket name and the name of the key, 
 The callback function takes two arguments, error and url.
 The url is the string we would want to place in our file linking tag to point to the file in the respective
 front-end code (In this case my FileUpload.js React Component).
-========================
-  s3bucket.upload(params, function(err, data) {
-    if (err) {
-      res.status(500).json({ error: true, Message: err });
-    } else {
-      var urlParams = {
-        Bucket: process.env.AWS_BUCKET_NAME,
-        Key: file.originalname
-      };
-      s3bucket.getSignedUrl("getObject", urlParams, function(err, url) {
-        // fileURL = url;
-        console.log(fileURL);
-        res.send({ data });
-      });
-      console.log(fileURL);
-      var newFileUploaded = {
-        description: req.body.description,
-        fileLink: fileURL
-      };
-      var document = new DOCUMENT(newFileUploaded);
-      document.save(function(error, newFile) {
-        if (error) {
-          throw error;
-        }
-      });
-    }
-  });
  */
