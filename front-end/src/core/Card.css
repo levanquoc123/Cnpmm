@@ -1,0 +1,30 @@
+.Card {
+  background: indigo;
+  color: rgb(80, 180, 80);
+  font-weight: bold;
+}
+
+/* black shade form 10-1 */
+.black10 {
+  background: #25b43a;
+}
+.black9 {
+  background: #cae273;
+}
+.black8 {
+  background: #58ad83;
+}
+.black7 {
+  background: rgb(120, 161, 223);
+}
+.black6 {
+  background: #e96f6f;
+}
+.black5 {
+  background: #44959b;
+}
+
+.card {
+  width: 50% !important;
+  height: 50% !important;
+}

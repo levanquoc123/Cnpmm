@@ -1,0 +1,17 @@
+.Shop {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 7.5px;
+    padding-right: 7.5px;
+    background-color: #0ca3e9;
+}
+
+.abc {
+    width: 110%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 6.5px;
+    padding-right: 6.5px;
+    background-color: #e90c7b;
+}
