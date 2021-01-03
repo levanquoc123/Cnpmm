@@ -282,10 +282,6 @@ exports.createProduct = (req, res) => {
     }
 
     let product = new Product(fields);
-
-    // 1kb = 1000
-    // 1mb = 1000000
-
     if (files.photo) {
       // console.log('FILES PHOTO: ', files.photo);
       if (files.photo.size > 1000000) {

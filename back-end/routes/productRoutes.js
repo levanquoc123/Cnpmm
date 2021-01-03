@@ -4,11 +4,6 @@ const { body } = require("express-validator");
 const router = express.Router();
 
 const productController = require("../controllers/productController");
-// const isAuth = require('../middleware/authMiddleware');
-
-// const multer = require("multer");
-// var storage = multer.memoryStorage();
-// var upload = multer({ storage: storage });
 
 //middleware routes
 const { getUserById } = require("../controllers/userController");

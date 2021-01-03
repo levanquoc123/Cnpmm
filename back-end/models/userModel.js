@@ -34,11 +34,6 @@ const UserSchema = new Mongoose.Schema(
         ref: "Role",
       },
     ],
-    // role: {
-    //   type: String,
-    //   default: "ROLE_USER",
-    //   enum: ["ROLE_USER", "ROLE_ADMIN", "ROLE_MERCHANT"],
-    // },
     avatar: { type: String },
     status: {
       type: Number,
@@ -63,16 +58,6 @@ const UserSchema = new Mongoose.Schema(
   },
   { timestamps: true }
 
-  // image: { type: String, required: true },
-  // status: {
-  //   type: String,
-  //   default: 'I am new!'
-  // },
-  // isAdmin: {
-  //   type: Boolean,
-  //   required: true,
-  //   default: false,
-  // }
 );
 
 // virtual field
@@ -125,4 +110,3 @@ const Token = Mongoose.model("Token", ToKenSchema);
 
 module.exports = { User, Token };
 
-// module.exports = mongoose.model("User", UserSchema);

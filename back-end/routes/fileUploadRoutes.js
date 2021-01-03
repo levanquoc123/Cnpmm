@@ -10,40 +10,6 @@ var AWS = require("aws-sdk");
 var storage = multer.memoryStorage();
 var upload = multer({ storage: storage });
 
-// app.get("/", (req, res) => {
-//   AWS.config.update({
-//     accessKeyId: "Your Key Goes Here",
-//     secretAccessKey: "Your Secret Key Goes Here",
-//   });
-//   let s3 = new AWS.S3();
-//   async function getImage() {
-//     const data = s3
-//       .getObject({
-//         Bucket: "companyimages",
-//         Key: "your stored image",
-//       })
-//       .promise();
-//     return data;
-//   }
-//   getImage()
-//     .then((img) => {
-//       let image =
-//         "<img src='data:image/jpeg;base64," + encode(img.Body) + "'" + "/>";
-//       let startHTML = "<html><body></body>";
-//       let endHTML = "</body></html>";
-//       let html = startHTML + image + endHTML;
-//       res.send(html);
-//     })
-//     .catch((e) => {
-//       res.send(e);
-//     });
-//   function encode(data) {
-//     let buf = Buffer.from(data);
-//     let base64 = buf.toString("base64");
-//     return base64;
-//   }
-// });
-
 // Get all Documents s Routes
 router.route("/").get((req, res, next) => {
   DOCUMENT.find(
@@ -60,17 +26,6 @@ router.route("/").get((req, res, next) => {
     }
   );
 });
-
-// Route to get a single existing GO data (needed for the Edit functionality)
-// router.route("/:id").get((req, res, next) => {
-//   DOCUMENT.findById(req.params.id, (err, go) => {
-//     if (err) {
-//       return next(err);
-//     }
-//     res.json(go);
-//   });
-// });
-
 // route to upload a pdf document file
 // In upload.single("file") - the name inside the single-quote is the name of the field that is going to be uploaded.
 router.post("/upload", upload.single("file"), function (req, res) {
