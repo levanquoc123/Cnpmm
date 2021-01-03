@@ -45,7 +45,6 @@ db.mongoose
   .then((result) => {
     console.log("MongoDB connected!");
     initial();
-
   })
   .catch((err) => {
     console.log("Cannot connect to the database!", err);
@@ -100,7 +99,6 @@ app.use(cookieParser());
 app.use(expressValidator());
 app.use(cors());
 
-// app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).single("image"));
 app.use("/images", express.static(path.join(__dirname, "images")));
 
 // routes middleware

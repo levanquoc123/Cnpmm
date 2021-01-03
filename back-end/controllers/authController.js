@@ -3,7 +3,7 @@ const bcrypt = require("bcryptjs");
 
 const jwt = require("jsonwebtoken"); // to generate signed token
 const expressJwt = require("express-jwt"); // for authorization check
-//const User = require("../models/userModel");
+// const User = require("../models/userModel");
 const { errorHandler } = require("../helpers/dbErrorHandler");
 
 const expressValidator = require("express-validator");
@@ -102,16 +102,41 @@ exports.signIn = (req, res) => {
   User.findOne({ email })
     .populate("roles", "-__v")
     .exec((err, user) => {
+      // if (err) {
+      //   res.status(500).send({ message: err });
+      //   return;
+      // }
+
+      // if (!user) {
+      //   return res.status(404).send({ message: "User Not found." });
+      // }
+
+      // var passwordIsValid = bcrypt.compareSync(
+      //   req.body.hashed_password,
+      //   user.hashed_password
+      // );
+
+      // if (!passwordIsValid) {
+      //   return res.status(401).send({
+      //     accessToken: null,
+      //     message: "Invalid Password!",
+      //   });
+      // }
+
+      // var token = jwt.sign({ id: user.id }, config.secret, {
+      //   expiresIn: 86400, // 24 hours
+      // });
+
       if (err || !user) {
         return res.status(400).json({
-          error: "User with that email does not exist. Please register!",
+          error: "Email hoặc mật khẩu không chính xác. Xin mời đăng ký!",
         });
       }
       // if user is found make sure the email and password match
       // create authenticate method in user model
       if (!user.authenticate(password)) {
         return res.status(401).json({
-          error: "Email or password do not match",
+          error: "Email hoặc mật khẩu không chính xác",
         });
       }
 
@@ -123,10 +148,12 @@ exports.signIn = (req, res) => {
       res.cookie("t", token, { expire: new Date() + 9999 });
 
       var authorities = [];
+      
 
       for (let i = 0; i < user.roles.length; i++) {
         authorities.push("ROLE_" + user.roles[i].name.toUpperCase());
       }
+      
       return res.status(200).send({
         token,
         user: {
@@ -139,7 +166,50 @@ exports.signIn = (req, res) => {
         // accessToken: token,
       });
     });
-  };
+
+  // find the user based on email
+  // const { email, password } = req.body;
+  // User.findOne({ email }, (err, user) => {
+  //   if (err || !user) {
+  //     return res.status(400).json({
+  //       error: "User with that email does not exist. Please register!",
+  //     });
+  //   }
+  //   // if user is found make sure the email and password match
+  //   // create authenticate method in user model
+  //   if (!user.authenticate(password)) {
+  //     return res.status(401).json({
+  //       error: "Email or password do not match",
+  //     });
+  //   }
+  //   // generate a signed token with user id and secret
+  //   const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
+  //     expiresIn: "7d",
+  //   });
+  //   // persist the token as 't' in cookie with expiry date
+  //   res.cookie("t", token, { expire: new Date() + 9999 });
+
+  //   var authorities = [];
+
+  //   for (let i = 0; i < user.roles.length; i++) {
+  //     authorities.push("ROLE_" + user.roles[i].name.toUpperCase());
+  //   }
+  //   // return response with user and token to frontend client
+  //   // const { _id, name, email, role } = user;
+  //   return res.status(200).send({
+  //     token,
+  //     user: {
+  //       _id: user._id,
+  //       name: user.name,
+  //       email: user.email,
+  //       roles: authorities,
+  //     },
+
+  //     // accessToken: token,
+  //   });
+  //   // return res.status(200).json({ token, user: { _id, email, name, role } });
+  // });
+};
 
 exports.signOut = (req, res) => {
   res.clearCookie("t");
@@ -180,7 +250,7 @@ exports.forgotPassword = (req, res) => {
   User.findOne({ email }, (err, user) => {
     if (err || !user) {
       return res.status(400).json({
-        error: "User with that email does not exist",
+        error: "Người dùng với email không tồn tại",
       });
     }
 
@@ -198,7 +268,7 @@ exports.forgotPassword = (req, res) => {
       subject: `Password Reset link`,
       html: `
                 <h1>Please use the following link to reset your password</h1>
-                <p>${process.env.CLIENT_URL}/auth/password/reset/${token}</p>
+                <p>${process.env.CLIENT_URL}auth/password/reset/${token}</p>
                 <hr />
                 <p>This email may contain sensitive information</p>
                 
@@ -213,7 +283,7 @@ exports.forgotPassword = (req, res) => {
         });
       } else {
         transporter
-          .send(emailData)
+          .sendMail(emailData)
           .then((sent) => {
             console.log("SIGNUP EMAIL SENT", sent);
             return res.status(200).json({
@@ -244,7 +314,7 @@ exports.resetPassword = (req, res) => {
           console.log("jwt RESET PASSWORD error", err);
           res
             .status(401)
-            .json({ error: "Expired link. Please reset password again" });
+            .json({ error: "liên kết đã hết hạn. Vui lòng đặt lại mật khẩu " });
         }
         // 2. Find the user in the database from the token
         User.findOne({ resetPasswordLink }, (err, user) => {
@@ -367,6 +437,15 @@ exports.signupPost = function (req, res, next) {
         if (err) {
           return res.status(500).send({ msg: err.message });
         }
+
+        // Send the email
+        // var transporter = nodemailer.createTransport({
+        //   service: "Sendgrid",
+        //   auth: {
+        //     user: process.env.SENDGRID_USERNAME,
+        //     pass: process.env.SENDGRID_PASSWORD,
+        //   },
+        // });
         var mailOptions = {
           from: process.env.EMAIL_FROM,
           to: user.email,
@@ -474,6 +553,15 @@ exports.resendTokenPost = function (req, res, next) {
       if (err) {
         return res.status(500).send({ msg: err.message });
       }
+
+      // Send the email
+      // var transporter = nodemailer.createTransport({
+      //   service: "Sendgrid",
+      //   auth: {
+      //     user: process.env.SENDGRID_USERNAME,
+      //     pass: process.env.SENDGRID_PASSWORD,
+      //   },
+      // });
       var mailOptions = {
         from: process.env.EMAIL_FROM,
         to: user.email,

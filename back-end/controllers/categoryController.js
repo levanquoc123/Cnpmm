@@ -4,6 +4,7 @@ const Category = require("../models/categoryModel");
 const _ = require("lodash");
 
 exports.getCategories = (req, res, next) => {
+
   Category.find().exec((err, data) => {
     if (err) return res.status(400).json({ error: errorHandler(err) });
     res.status(200).json(data);
@@ -24,6 +25,7 @@ exports.read = (req, res) => {
 };
 
 exports.createCategory = async (req, res, next) => {
+
   const name = req.body.name;
   const category = new Category({
     name: name,

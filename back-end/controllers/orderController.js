@@ -1,9 +1,27 @@
 const { Order, CartItem } = require("../models/orderModel");
 const { errorHandler } = require("../helpers/dbErrorHandler");
 
+// sendgrid for email npm i @sendgrid/mail
+// const sgMail = require("@sendgrid/mail");
+
+// const mailer = require("../utils/mailer");
+// const mail = require("@sendgrid/mail");
+
 const nodemailer = require("nodemailer");
 const sendgridTransport = require("nodemailer-sendgrid-transport");
 var smtpTransport = require("nodemailer-smtp-transport");
+
+// const transporter = nodemailer.createTransport(
+//   sendgridTransport({
+//     auth: {
+//       api_key:
+//         "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",
+//     },
+//   })
+// );
+
+// sgMail.setApiKey('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');
+// sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 exports.getOrderById = (req, res, next, id) => {
   Order.findById(id)
@@ -22,6 +40,7 @@ exports.getOrderById = (req, res, next, id) => {
 // your create order method with email capabilities
 exports.createOrder = (req, res) => {
   console.log("CREATE ORDER: ", req.body);
+
   req.body.order.user = req.profile;
   const order = new Order(req.body.order);
   order.save((error, data) => {
@@ -74,6 +93,7 @@ exports.createOrder = (req, res) => {
                     <p>Login to your dashboard</a> to see the order in detail.</p>
                 `,
     };
+
     res.status(201).json(data);
 
     transporter.sendMail(emailData, function (error, info) {

@@ -4,6 +4,11 @@ const { body } = require("express-validator");
 const router = express.Router();
 
 const productController = require("../controllers/productController");
+// const isAuth = require('../middleware/authMiddleware');
+
+// const multer = require("multer");
+// var storage = multer.memoryStorage();
+// var upload = multer({ storage: storage });
 
 //middleware routes
 const { getUserById } = require("../controllers/userController");
@@ -12,9 +17,6 @@ const {
   isAdmin,
   isAuth,
 } = require("../controllers/authController");
-
-// Create a new Tutorial
-// router.post("/", productController.create);
 
 // Retrieve all Tutorials
 router.get("/findproducts", productController.findAll);
@@ -49,6 +51,7 @@ router.get("/products/search", productController.listSearch);
 router.get("/products/related/:productId", productController.listRelated);
 router.get("/products/categories", productController.listCategories);
 router.get("/product/photo/:productId", productController.photo);
+//router.get("/sold", productController.getProductSoldMost);
 
 //Customed POST routes
 router.post("/products/by/search", productController.listBySearch);

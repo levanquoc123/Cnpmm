@@ -52,12 +52,6 @@ const ProductSchema = new Mongoose.Schema(
   { timestamps: true }
 );
 
-// ProductSchema.method("toJSON", function() {
-//   const { __v, _id, ...object } = this.toObject();
-//   object.id = _id;
-//   return object;
-// });
-
 ProductSchema.plugin(mongoosePaginate);
 
 module.exports = Mongoose.model("Product", ProductSchema);

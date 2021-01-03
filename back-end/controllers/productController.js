@@ -1,3 +1,4 @@
+
 const formidable = require("formidable");
 const _ = require("lodash");
 const fs = require("fs");
@@ -98,6 +99,7 @@ exports.getProducts = async (req, res, next) => {
   } catch (err) {
     if (!err.statusCode) {
       err.statusCode = 500;
+      // return res.status(400).json({ error: errorHandler(err) });
     }
     next(err);
   }
@@ -155,6 +157,9 @@ exports.updateProduct = (req, res) => {
     let product = req.product;
     //using Lodash to deep clone the object
     product = _.extend(product, fields);
+
+    // 1kb = 1000
+    // 1mb = 1000000
 
     if (files.photo) {
       console.log("FILES PHOTO: ", files.photo);
@@ -278,6 +283,9 @@ exports.createProduct = (req, res) => {
 
     let product = new Product(fields);
 
+    // 1kb = 1000
+    // 1mb = 1000000
+
     if (files.photo) {
       // console.log('FILES PHOTO: ', files.photo);
       if (files.photo.size > 1000000) {
@@ -365,6 +373,9 @@ exports.listBySearch = (req, res) => {
   let limit = req.body.limit ? parseInt(req.body.limit) : 100;
   let skip = parseInt(req.body.skip);
   let findArgs = {};
+
+  // console.log(order, sortBy, limit, skip, req.body.filters);
+  // console.log("findArgs", findArgs);
 
   for (let key in req.body.filters) {
     if (req.body.filters[key].length > 0) {
